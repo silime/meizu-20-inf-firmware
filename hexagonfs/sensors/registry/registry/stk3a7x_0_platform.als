@@ -1,0 +1,1 @@
+{"stk3a7x_0_platform.als":{"owner":"sns_stk3a7x","fac_cal":{"type":"grp","ver":"0","data":""}}}

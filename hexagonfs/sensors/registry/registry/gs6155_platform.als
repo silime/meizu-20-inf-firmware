@@ -1,0 +1,1 @@
+{"gs6155_platform.als":{"owner":"sns_gs6155","fac_cal":{"type":"grp","ver":"0","data":""}}}
