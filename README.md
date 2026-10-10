@@ -1,7 +1,6 @@
 # Meizu 20 Inf 固件仓库
 
-本仓库保存从 Meizu 20 Inf（`meizu,meizu-20-inf`，Qualcomm `sm8550`）上提取的设备相关固件，
-
+本仓库保存从 Meizu 20 Inf（`meizu,meizu-20-inf`，Qualcomm `sm8550`）上提取的设备相关固件。
 
 ## 设备信息
 
@@ -28,9 +27,9 @@
 | `hexagonfs/sensors/` | 同左 | SSC/CHRE 传感器配置与注册表 |
 | `hexagonfs/socinfo/` | 同左 | 平台识别信息（soc_id、revision、平台版本等） |
 | `qcom/sm8550/meizu/` | `/lib/firmware/qcom/sm8550/meizu/` | ADSP/CDSP/Modem/IPA/VPU 固件（`adsp.mbn`、`cdsp.mbn`、`modem.mbn`、`modem.mbn` 对应的 `*.jsn`/`*_dtb.mbn`、`a740_sqe.fw`、`a740_zap.mbn`、`vpu30_4v.mbn`），以及 `modem_pr/` 运营商 MCFG 配置 |
-| `qcom/sm8550/MEIZU20Inf-tplg.bin` | `/lib/firmware/qcom/sm8550/MEIZU20Inf-tplg.bin` | 本机 ALSA 拓扑（UCM/topology）文件 |
+| `qcom/sm8550/MEIZU20Inf-tplg.bin` | `/lib/firmware/qcom/sm8550/MEIZU20Inf-tplg.bin` | 本机 ALSA AudioReach topology（UCM 配置另行安装） |
+| `qcom/sm8550/meizu/voicemmode1-handset.bin` | `/lib/firmware/qcom/sm8550/meizu/voicemmode1-handset.bin` | q6apm hostless modem voice 图、VCPM 和校准 profile，格式 v1 |
 | `tfa98xx.cnt` | `/lib/firmware/tfa98xx.cnt` | TFA98xx 智能功放配置（本机为 TFA9875，`1a75_07`） |
-
 
 ### 权限说明
 
@@ -47,3 +46,17 @@
 ```sh
 sudo scripts/install.sh            # 安装到 /
 DESTDIR=/tmp/rootfs scripts/install.sh   # 安装到指定根目录
+```
+
+## 通话音频
+
+`voicemmode1-handset.bin` 包含本机 handset 的 AudioReach RX/TX 图和 VCPM 校准，
+由配套内核的 `q6apm-voice-dai` 驱动加载。DTS 的 `voice-dais` 节点需要指定
+相对于 firmware 搜索目录的路径：
+
+```dts
+firmware-name = "qcom/sm8550/meizu/voicemmode1-handset.bin";
+```
+
+通话还需要 ModemManager、81voltd，以及 WirePlumber 的 `Voice Call` profile 策略
+和本机 UCM 配置。UCM/WirePlumber 配置应与内核接口配套安装，不属于本固件仓库。
